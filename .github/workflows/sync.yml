@@ -1,0 +1,72 @@
+name: sync upstream
+
+on:
+  schedule:
+    # daily at 03:17 UTC (off-peak; avoids the busy top-of-hour cron tier)
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Upstream version to mirror (e.g. 3.50.0). Empty = latest."
+        required: false
+        default: ""
+      force:
+        description: "Republish even if version already exists on npm"
+        type: boolean
+        default: false
+      dry_run:
+        description: "Build but skip npm publish"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # for tagging the mirror commit
+  id-token: write   # required by `npm publish --provenance`
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: sync
+        id: sync
+        env:
+          # All workflow_dispatch inputs are passed via env, never interpolated
+          # into shell. scripts/sync.mjs validates INPUT_VERSION with a strict
+          # semver regex before using it anywhere.
+          # No NODE_AUTH_TOKEN: this workflow uses npm Trusted Publishers
+          # (OIDC). The `id-token: write` permission above is what grants the
+          # runner an OIDC token; npm CLI exchanges it for a short-lived
+          # publish credential.
+          GH_TOKEN: ${{ github.token }}
+          INPUT_VERSION: ${{ inputs.version }}
+          FORCE: ${{ inputs.force }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: node scripts/sync.mjs
+
+      - name: tag mirror commit
+        if: steps.sync.outputs.skip == 'false' && inputs.dry_run != true
+        env:
+          # VERSION comes from our own script (stdout -> outputs.version), and
+          # has already been regex-validated as semver inside scripts/sync.mjs.
+          VERSION: ${{ steps.sync.outputs.version }}
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git rev-parse "v${VERSION}" >/dev/null 2>&1; then
+            echo "tag v${VERSION} already exists, skipping"
+          else
+            git tag "v${VERSION}"
+            git push origin "v${VERSION}"
+          fi

@@ -1,0 +1,44 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint-launcher:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: syntax-check launcher and sync script
+        run: |
+          node --check templates/main/bin/task.js
+          node --check scripts/sync.mjs
+
+  dry-run-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: dry-run build (no publish)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DRY_RUN: "true"
+          FORCE: "true"   # let the build run even if the latest is already published
+        run: node scripts/sync.mjs
+      - name: list dist
+        run: |
+          set -euo pipefail
+          ls -la dist/
+          for d in dist/*/; do
+            echo "--- $d ---"
+            cat "$d/package.json"
+          done
