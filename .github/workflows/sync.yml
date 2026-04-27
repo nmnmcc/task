@@ -35,11 +35,12 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          # Node 24 LTS ships bundled npm >= 11.5.1, satisfying the Trusted
+          # Publishing CLI requirement without an in-place self-update (which
+          # races on Node 22's bundled npm 10.x, see MODULE_NOT_FOUND for
+          # promise-retry during `npm install -g npm@latest`).
+          node-version: "24"
           registry-url: "https://registry.npmjs.org"
-
-      - name: ensure npm CLI >= 11.5.1 (required by npm Trusted Publishing)
-        run: npm install -g npm@latest
 
       - name: sync
         id: sync
