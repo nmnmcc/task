@@ -36,12 +36,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-          # Intentionally NOT setting `registry-url`: it makes setup-node
-          # write an .npmrc with `_authToken=${NODE_AUTH_TOKEN}` and seed
-          # NODE_AUTH_TOKEN with the placeholder `XXXXX-XXXXX-XXXXX-XXXXX`.
-          # npm CLI then prefers that (fake) token over OIDC, fails auth,
-          # and the registry returns 404 to avoid leaking package names.
-          # OIDC trusted publishers don't need a custom .npmrc.
+          registry-url: "https://registry.npmjs.org"
 
       - name: sync
         id: sync
@@ -49,11 +44,12 @@ jobs:
           # All workflow_dispatch inputs are passed via env, never interpolated
           # into shell. scripts/sync.js validates INPUT_VERSION with a strict
           # semver regex before using it anywhere.
-          # No NODE_AUTH_TOKEN: this workflow uses npm Trusted Publishers
-          # (OIDC). The `id-token: write` permission above is what grants the
-          # runner an OIDC token; npm CLI exchanges it for a short-lived
-          # publish credential.
+          # NPM_TOKEN: granular access token (or automation token) issued by
+          # the same npm account that owns the @nmnmcc/* packages. Provenance
+          # signing still uses GitHub OIDC via id-token: write — that path is
+          # independent of npm registry auth.
           GH_TOKEN: ${{ github.token }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           INPUT_VERSION: ${{ inputs.version }}
           FORCE: ${{ inputs.force }}
           DRY_RUN: ${{ inputs.dry_run }}

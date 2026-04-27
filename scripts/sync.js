@@ -179,7 +179,7 @@ const publishAll = async () => {
   for (const p of PLATFORMS) {
     await $({
       cwd: path.join(DIST, sanitizeDir(getPlatPkg(p))),
-    })`npm publish --access public --provenance`;
+    })`npm publish --access public --provenance --loglevel=http`;
   }
   await $({
     cwd: path.join(DIST, sanitizeDir(MAIN_PKG)),
