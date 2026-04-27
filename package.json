@@ -1,0 +1,11 @@
+{
+  "type": "module",
+  "scripts": {
+    "generate": "node ./scripts/generate.js",
+    "sync": "node ./scripts/sync.js"
+  },
+  "dependencies": {
+    "octokit": "^5.0.5",
+    "zx": "^8.8.5"
+  }
+}

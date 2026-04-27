@@ -1,0 +1,45 @@
+{
+  "name": "@nmnmcc/task",
+  "version": "0.0.0",
+  "description": "Unofficial npm mirror of go-task/task using optionalDependencies — no postinstall, mirrorable, with provenance.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmnmcc/task.git"
+  },
+  "homepage": "https://taskfile.dev",
+  "bin": {
+    "task": "bin/task.js"
+  },
+  "files": [
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": [
+    "task",
+    "taskfile",
+    "build-tool",
+    "task-runner",
+    "mirror"
+  ],
+  "optionalDependencies": {
+    "@nmnmcc/task-darwin-x64": "0.0.0",
+    "@nmnmcc/task-darwin-arm64": "0.0.0",
+    "@nmnmcc/task-freebsd-ia32": "0.0.0",
+    "@nmnmcc/task-freebsd-x64": "0.0.0",
+    "@nmnmcc/task-freebsd-arm": "0.0.0",
+    "@nmnmcc/task-freebsd-arm64": "0.0.0",
+    "@nmnmcc/task-linux-ia32": "0.0.0",
+    "@nmnmcc/task-linux-x64": "0.0.0",
+    "@nmnmcc/task-linux-arm": "0.0.0",
+    "@nmnmcc/task-linux-arm64": "0.0.0",
+    "@nmnmcc/task-linux-riscv64": "0.0.0",
+    "@nmnmcc/task-win32-ia32": "0.0.0",
+    "@nmnmcc/task-win32-x64": "0.0.0",
+    "@nmnmcc/task-win32-arm64": "0.0.0"
+  }
+}

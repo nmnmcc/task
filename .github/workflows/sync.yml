@@ -20,8 +20,8 @@ on:
         default: false
 
 permissions:
-  contents: write   # for tagging the mirror commit
-  id-token: write   # required by `npm publish --provenance`
+  contents: write # for tagging the mirror commit
+  id-token: write # required by `npm publish --provenance`
 
 concurrency:
   group: sync
@@ -35,14 +35,14 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           registry-url: "https://registry.npmjs.org"
 
       - name: sync
         id: sync
         env:
           # All workflow_dispatch inputs are passed via env, never interpolated
-          # into shell. scripts/sync.mjs validates INPUT_VERSION with a strict
+          # into shell. scripts/sync.js validates INPUT_VERSION with a strict
           # semver regex before using it anywhere.
           # No NODE_AUTH_TOKEN: this workflow uses npm Trusted Publishers
           # (OIDC). The `id-token: write` permission above is what grants the
@@ -52,13 +52,13 @@ jobs:
           INPUT_VERSION: ${{ inputs.version }}
           FORCE: ${{ inputs.force }}
           DRY_RUN: ${{ inputs.dry_run }}
-        run: node scripts/sync.mjs
+        run: npm ci && npm run sync
 
       - name: tag mirror commit
         if: steps.sync.outputs.skip == 'false' && inputs.dry_run != true
         env:
           # VERSION comes from our own script (stdout -> outputs.version), and
-          # has already been regex-validated as semver inside scripts/sync.mjs.
+          # has already been regex-validated as semver inside scripts/sync.js.
           VERSION: ${{ steps.sync.outputs.version }}
         run: |
           set -euo pipefail

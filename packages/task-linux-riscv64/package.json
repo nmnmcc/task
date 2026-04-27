@@ -1,0 +1,22 @@
+{
+  "name": "@nmnmcc/task-linux-riscv64",
+  "version": "0.0.0",
+  "description": "task binary for linux-riscv64, mirrored from go-task/task",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmnmcc/task.git"
+  },
+  "homepage": "https://taskfile.dev",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "riscv64"
+  ],
+  "files": [
+    "bin/",
+    "LICENSE"
+  ],
+  "preferUnplugged": true
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@nmnmcc/task-darwin-arm64",
+  "version": "0.0.0",
+  "description": "task binary for darwin-arm64, mirrored from go-task/task",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmnmcc/task.git"
+  },
+  "homepage": "https://taskfile.dev",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "files": [
+    "bin/",
+    "LICENSE"
+  ],
+  "preferUnplugged": true
+}

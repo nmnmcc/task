@@ -1,0 +1,22 @@
+{
+  "name": "@nmnmcc/task-freebsd-x64",
+  "version": "0.0.0",
+  "description": "task binary for freebsd-x64, mirrored from go-task/task",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmnmcc/task.git"
+  },
+  "homepage": "https://taskfile.dev",
+  "os": [
+    "freebsd"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "bin/",
+    "LICENSE"
+  ],
+  "preferUnplugged": true
+}

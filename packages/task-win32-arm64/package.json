@@ -1,0 +1,22 @@
+{
+  "name": "@nmnmcc/task-win32-arm64",
+  "version": "0.0.0",
+  "description": "task binary for win32-arm64, mirrored from go-task/task",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmnmcc/task.git"
+  },
+  "homepage": "https://taskfile.dev",
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "files": [
+    "bin/",
+    "LICENSE"
+  ],
+  "preferUnplugged": true
+}

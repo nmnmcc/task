@@ -1,0 +1,22 @@
+{
+  "name": "@nmnmcc/task-linux-ia32",
+  "version": "0.0.0",
+  "description": "task binary for linux-ia32, mirrored from go-task/task",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmnmcc/task.git"
+  },
+  "homepage": "https://taskfile.dev",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "ia32"
+  ],
+  "files": [
+    "bin/",
+    "LICENSE"
+  ],
+  "preferUnplugged": true
+}
