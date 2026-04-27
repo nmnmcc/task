@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NMNMCC/task.git"
+    "url": "git+https://github.com/nmnmcc/task.git"
   },
   "homepage": "https://taskfile.dev",
   "bin": {
