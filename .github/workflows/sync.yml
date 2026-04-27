@@ -38,18 +38,19 @@ jobs:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
 
+      - name: ensure npm CLI >= 11.5.1 (required by npm Trusted Publishing)
+        run: npm install -g npm@latest
+
       - name: sync
         id: sync
         env:
-          # All workflow_dispatch inputs are passed via env, never interpolated
-          # into shell. scripts/sync.js validates INPUT_VERSION with a strict
-          # semver regex before using it anywhere.
-          # NPM_TOKEN: granular access token (or automation token) issued by
-          # the same npm account that owns the @nmnmcc/* packages. Provenance
-          # signing still uses GitHub OIDC via id-token: write — that path is
-          # independent of npm registry auth.
+          # Trusted Publishing: auth happens via GitHub OIDC (id-token: write).
+          # Each @nmnmcc/* package must be onboarded individually at
+          # npmjs.com/package/<name>/access — workflow filename "sync.yml" and
+          # repo "NMNMCC/task" must match exactly. Do NOT set NODE_AUTH_TOKEN
+          # or NPM_TOKEN; they conflict with OIDC and silently fall back to
+          # token auth.
           GH_TOKEN: ${{ github.token }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           INPUT_VERSION: ${{ inputs.version }}
           FORCE: ${{ inputs.force }}
           DRY_RUN: ${{ inputs.dry_run }}

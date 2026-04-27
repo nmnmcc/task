@@ -36,7 +36,7 @@ for (const { os, cpu } of PLATFORMS) {
     version: "0.0.0",
     description: `task binary for ${os}-${cpu}, mirrored from go-task/task`,
     license: "MIT",
-    repository: { type: "git", url: "git+https://github.com/nmnmcc/task.git" },
+    repository: { type: "git", url: "git+https://github.com/NMNMCC/task.git" },
     homepage: "https://taskfile.dev",
     os: [os],
     cpu: [cpu],
@@ -51,7 +51,7 @@ writeJSON(path.join(PACKAGES, "task", "package.json"), {
   description:
     "Unofficial npm mirror of go-task/task using optionalDependencies — no postinstall, mirrorable, with provenance.",
   license: "MIT",
-  repository: { type: "git", url: "git+https://github.com/nmnmcc/task.git" },
+  repository: { type: "git", url: "git+https://github.com/NMNMCC/task.git" },
   homepage: "https://taskfile.dev",
   bin: { task: "bin/task.js" },
   files: ["bin/", "README.md", "LICENSE"],
