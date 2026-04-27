@@ -35,12 +35,14 @@ const getExeName = (p) => (p.os === "win32" ? "task.exe" : "task");
 const sanitizeDir = (pkg) => pkg.replace(/[/@]/g, "_");
 
 const download = async (url, dest) => {
-  const r = await octokit.request({
-    method: "GET",
-    url,
-    request: { parseSuccessResponseBody: false },
+  const r = await fetch(url, {
+    redirect: "follow",
+    headers: { "user-agent": "nmnmcc-task-sync" },
   });
-  const buf = Buffer.from(await r.data.arrayBuffer());
+  if (!r.ok) {
+    throw new Error(`download ${url} -> ${r.status} ${r.statusText}`);
+  }
+  const buf = Buffer.from(await r.arrayBuffer());
   await fs.writeFile(dest, buf);
 }
 
