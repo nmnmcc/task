@@ -36,7 +36,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-          registry-url: "https://registry.npmjs.org"
+          # Intentionally NOT setting `registry-url`: it makes setup-node
+          # write an .npmrc with `_authToken=${NODE_AUTH_TOKEN}` and seed
+          # NODE_AUTH_TOKEN with the placeholder `XXXXX-XXXXX-XXXXX-XXXXX`.
+          # npm CLI then prefers that (fake) token over OIDC, fails auth,
+          # and the registry returns 404 to avoid leaking package names.
+          # OIDC trusted publishers don't need a custom .npmrc.
 
       - name: sync
         id: sync
